@@ -1,5 +1,6 @@
 import time, os, importlib, random
 #
+os.system('cls')
 version_of_the_game = "Airport Game v.0.2"
 
 # Intro the the Game + Tutorial
@@ -12,16 +13,20 @@ choice_1 = int(input("Enter: "))
 os.system('cls')
 while choice_1 == 2:
     Tutorial = importlib.import_module('Tutorial')
-    time.sleep(0)
-    print("Are you ready to play the game? (yes / no) ")
-    time.sleep(1)
-    ready_to_play = input("Enter: ")
-    if ready_to_play == "no":
-        os.system('cls')
-        importlib.reload(Tutorial)
-        continue
-    else:
-        break
+
+    while True:
+        print("Are you ready to play the game? (yes / no) ")
+        time.sleep(1)
+        ready_to_play = input("Enter: ")
+        if ready_to_play == "no":
+            os.system('cls')
+            importlib.reload(Tutorial)
+            continue
+        if ready_to_play == "yes":
+            break
+        else:
+            print("Check your spelling!")
+    break
 
 # The Actual Game
 
@@ -43,9 +48,9 @@ elif dif_choice == 3:
     difficulty = 3000
     time.sleep(0.5)
     print("\nChosen difficulty = Hard")
-time.sleep(0.5)
+time.sleep(0.8)
 os.system('cls')
-
+#Game
 def pkgtype():
     type = random.randint(1, 3)
     if type == 1:
