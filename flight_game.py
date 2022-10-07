@@ -100,17 +100,7 @@ elif choice_1 == 1:
         result = cursor.fetchall()
         for row in result:
             return row[0]
-    def co2_decrease():
-        sql = "select airport.latitude_deg, airport.longitude_deg from airport WHERE airport.name = '" + travel + "'"
-        cursor = connection.cursor()
-        cursor.execute(sql)
-        result = cursor.fetchall()
-        if cursor.rowcount > 0:
-            for row in result:
-                d = distance.distance(starting_point2(start), (row[1], row[2])).km
-                co2_budget = co2_budget - d
-                print(co2_budget)
-        return
+
 
     co2_budget = int(0)
     if difficulty == '1':
@@ -135,7 +125,7 @@ elif choice_1 == 1:
             co2_budget = co2_budget - 500
             print(f'Co2 level decreased by 500 more due to bad weather. Current Co2 level: {co2_budget}')
         else:
-            print(f'Good weather. Current Co2 level: {co2_decrease()}')
+            print(f'Good weather. Current Co2 level: {co2_budget}')
 
 
 
