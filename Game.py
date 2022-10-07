@@ -99,10 +99,36 @@ def new_turn(new_location, coleft, current_score):
             elif type == 3:
                 type = "Gold  "
             return type
+        def qwerty():
+            sql = "select airport.name, airport.latitude_deg, airport.longitude_deg from airport inner join country on " \
+                  "country.iso_country = airport.iso_country "
+            sql += "where country.name = '" + start + "' and airport.name NOT IN (SELECT airport.NAME from airport "
+            sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = '" + start + \
+                   "' AND airport.type IN "
+            sql += "('large_airport')) AND airport.type IN ('large_airport', 'medium_airport') order by type, rand() limit 1"
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            if cursor.rowcount > 0:
+                for row in result:
+                    return row[0]
+        def qwe():
+            sql = "select airport.name, airport.latitude_deg, airport.longitude_deg from airport inner join country on " \
+                  "country.iso_country = airport.iso_country "
+            sql += "where country.name = '" + start + "' and airport.name NOT IN (SELECT airport.NAME from airport "
+            sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = '" + start + \
+                   "' AND airport.type IN "
+            sql += "('large_airport')) AND airport.type IN ('large_airport', 'medium_airport') order by type, rand() limit 1"
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            if cursor.rowcount > 0:
+                for row in result:
+                    return int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112)/1000)
 
         # RANDOM AIRPORT
-        random_airport = "bob"
-        dist = 5
+        random_airport = qwerty()
+        dist = qwe()
         airport_pkg = [f"{pkgtype()}", f"{random_airport}", f"{dist}"]
         return airport_pkg
 
@@ -200,46 +226,6 @@ def new_turn(new_location, coleft, current_score):
 
     airport_pkg5 = function()
     airport_pkg5.append(5)
-
-    sql = "select airport.name, airport.latitude_deg, airport.longitude_deg from airport inner join country on " \
-          "country.iso_country = airport.iso_country "
-    sql += "where country.name = '" + start + "' and airport.name NOT IN (SELECT airport.NAME from airport "
-    sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = '" + start + \
-           "' AND airport.type IN "
-    sql += "('large_airport')) AND airport.type IN ('large_airport', 'medium_airport') order by type, rand() limit 5"
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    if cursor.rowcount > 0:
-        for row in result:
-            times =0
-            if times == 0:
-                airport_pkg1.remove(1)
-                airport_pkg1.insert(1,row[0])
-                airport_pkg1.remove(2)
-                airport_pkg1.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
-            if times == 1:
-                airport_pkg2.remove(1)
-                airport_pkg2.insert(1,row[0])
-                airport_pkg2.remove(2)
-                airport_pkg2.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
-            if times == 2:
-                airport_pkg3.remove(1)
-                airport_pkg3.insert(1,row[0])
-                airport_pkg3.remove(2)
-                airport_pkg3.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
-            if times == 3:
-                airport_pkg4.remove(1)
-                airport_pkg4.insert(1,row[0])
-                airport_pkg4.remove(2)
-                airport_pkg4.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
-            if times == 4:
-                airport_pkg5.remove(1)
-                airport_pkg5.insert(1,row[0])
-                airport_pkg5.remove(2)
-                airport_pkg5.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
-            times = times +1
-
 
     co2_left = coleft
     score = current_score
