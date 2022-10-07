@@ -90,7 +90,7 @@ elif choice_1 == 1:
         result = cursor.fetchall()
         if cursor.rowcount > 0:
             for row in result:
-                print(f"{row[0]},       {distance.distance(starting_point2(start), (row[1], row[2])).km} kms,      points: {random.randint(1,3)}")
+                print(f"{row[0]},       {int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112)/1000)} c02 required,      points: {random.randint(1,3)}")
         return
 
     def go():
@@ -100,7 +100,6 @@ elif choice_1 == 1:
         result = cursor.fetchall()
         for row in result:
             return row[0]
-
 
     co2_budget = int(0)
     if difficulty == '1':
@@ -138,7 +137,3 @@ elif choice_1 == 1:
         print(f'You have {co2_budget} Co2 Budget')
     else:
         print('Input correct difficulty level.')
-
-
-
-
