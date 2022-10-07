@@ -64,7 +64,30 @@ os.system('cls')
 #Game - Main Function
 def new_turn(new_location, coleft, current_score):
     #FUNCTIONS
+    start = "Finland"
+    def starting_point1(start):
+        sql = "select airport.name, airport.municipality from airport inner join country on country.iso_country = airport.iso_country "
+        sql += "where country.name = '" + start + "' and airport.type in "
+        sql += "('large_airport', 'medium_airport') ORDER BY type LIMIT 1"
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result1 = cursor.fetchall()
+        if cursor.rowcount > 0:
+            for row in result1:
+                print(f'Starting point: {row[0], row[1]}')
 
+        return
+    def starting_point2(start):
+
+        sql = "select airport.latitude_deg, airport.longitude_deg from airport inner join country on country.iso_country = airport.iso_country "
+        sql += "where country.name = '" + start + "' and airport.type in "
+        sql += "('large_airport', 'medium_airport') ORDER BY type LIMIT 1"
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        if cursor.rowcount > 0:
+            for row in result:
+                return row[0], row[1]
 
     def function():
         def pkgtype():
@@ -177,6 +200,46 @@ def new_turn(new_location, coleft, current_score):
 
     airport_pkg5 = function()
     airport_pkg5.append(5)
+
+    sql = "select airport.name, airport.latitude_deg, airport.longitude_deg from airport inner join country on " \
+          "country.iso_country = airport.iso_country "
+    sql += "where country.name = '" + start + "' and airport.name NOT IN (SELECT airport.NAME from airport "
+    sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = '" + start + \
+           "' AND airport.type IN "
+    sql += "('large_airport')) AND airport.type IN ('large_airport', 'medium_airport') order by type, rand() limit 5"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount > 0:
+        for row in result:
+            times =0
+            if times == 0:
+                airport_pkg1.remove(1)
+                airport_pkg1.insert(1,row[0])
+                airport_pkg1.remove(2)
+                airport_pkg1.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
+            if times == 1:
+                airport_pkg2.remove(1)
+                airport_pkg2.insert(1,row[0])
+                airport_pkg2.remove(2)
+                airport_pkg2.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
+            if times == 2:
+                airport_pkg3.remove(1)
+                airport_pkg3.insert(1,row[0])
+                airport_pkg3.remove(2)
+                airport_pkg3.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
+            if times == 3:
+                airport_pkg4.remove(1)
+                airport_pkg4.insert(1,row[0])
+                airport_pkg4.remove(2)
+                airport_pkg4.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
+            if times == 4:
+                airport_pkg5.remove(1)
+                airport_pkg5.insert(1,row[0])
+                airport_pkg5.remove(2)
+                airport_pkg5.insert(int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112) / 1000))
+            times = times +1
+
 
     co2_left = coleft
     score = current_score
