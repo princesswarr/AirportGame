@@ -1,4 +1,5 @@
-import time, os, importlib, random, mysql.connector
+import time, os, importlib, random
+import mysql.connector
 from geopy import distance
 connection = mysql.connector.connect(
     host='127.0.0.1',
@@ -9,7 +10,7 @@ connection = mysql.connector.connect(
     autocommit=True
 )
 os.system('cls')
-version_of_the_game = "Airport Game v.0.3"
+version_of_the_game = "Airport Game v.0.4"
 
 # Intro the the Game + Tutorial
 
@@ -45,15 +46,15 @@ print("Choose your difficulty \nEasy (1)\nMedium (2)\nHard (3)")
 dif_choice = int(input("Enter difficulty: "))
 difficulty = 0
 if dif_choice == 1:
-    difficulty = 10000
+    difficulty = 500
     time.sleep(0.5)
     print("\nChosen difficulty = Easy")
 elif dif_choice == 2:
-    difficulty = 6500
+    difficulty = 350
     time.sleep(0.5)
     print("\nChosen difficulty = Medium")
 elif dif_choice == 3:
-    difficulty = 3000
+    difficulty = 200
     time.sleep(0.5)
     print("\nChosen difficulty = Hard")
 time.sleep(0.8)
@@ -62,33 +63,23 @@ os.system('cls')
 
 
 #Game - Main Function
+
+def startlocation():
+    sql = "select airport.name from airport inner join country on country.iso_country = airport.iso_country "
+    sql += "where country.name = 'Finland' and airport.name NOT IN (SELECT airport.NAME from airport "
+    sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = 'Finland' AND airport.type IN "
+    sql += "('large_airport')) AND rand() limit 1"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    for row in result:
+        startlocation = row[0]
+    return startlocation
+
+
 def new_turn(new_location, coleft, current_score):
     #FUNCTIONS
     start = "Finland"
-    def starting_point1(start):
-        sql = "select airport.name, airport.municipality from airport inner join country on country.iso_country = airport.iso_country "
-        sql += "where country.name = '" + start + "' and airport.type in "
-        sql += "('large_airport', 'medium_airport') ORDER BY type LIMIT 1"
-        cursor = connection.cursor()
-        cursor.execute(sql)
-        result1 = cursor.fetchall()
-        if cursor.rowcount > 0:
-            for row in result1:
-                print(f'Starting point: {row[0], row[1]}')
-
-        return
-    def starting_point2(start):
-
-        sql = "select airport.latitude_deg, airport.longitude_deg from airport inner join country on country.iso_country = airport.iso_country "
-        sql += "where country.name = '" + start + "' and airport.type in "
-        sql += "('large_airport', 'medium_airport') ORDER BY type LIMIT 1"
-        cursor = connection.cursor()
-        cursor.execute(sql)
-        result = cursor.fetchall()
-        if cursor.rowcount > 0:
-            for row in result:
-                return row[0], row[1]
-
     def function():
         def pkgtype():
             type = random.randint(1, 3)
@@ -99,36 +90,44 @@ def new_turn(new_location, coleft, current_score):
             elif type == 3:
                 type = "Gold  "
             return type
-        def qwerty():
-            sql = "select airport.name, airport.latitude_deg, airport.longitude_deg from airport inner join country on " \
-                  "country.iso_country = airport.iso_country "
-            sql += "where country.name = '" + start + "' and airport.name NOT IN (SELECT airport.NAME from airport "
-            sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = '" + start + \
-                   "' AND airport.type IN "
-            sql += "('large_airport')) AND airport.type IN ('large_airport', 'medium_airport') order by type, rand() limit 1"
+        def airport():
+            sql = "select airport.name, airport.latitude_deg, airport.longitude_deg from airport inner join country " \
+                  "on country.iso_country = airport.iso_country "
+            sql += "where country.name = 'Finland' and airport.name NOT IN (SELECT airport.NAME from airport "
+            sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = 'Finland' " \
+                   "AND airport.name != '"+new_location+"' AND airport.type IN "
+            sql += "('large_airport')) AND rand() limit 1"
             cursor = connection.cursor()
             cursor.execute(sql)
             result = cursor.fetchall()
-            if cursor.rowcount > 0:
-                for row in result:
-                    return row[0]
-        def qwe():
-            sql = "select airport.name, airport.latitude_deg, airport.longitude_deg from airport inner join country on " \
-                  "country.iso_country = airport.iso_country "
-            sql += "where country.name = '" + start + "' and airport.name NOT IN (SELECT airport.NAME from airport "
-            sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = '" + start + \
-                   "' AND airport.type IN "
-            sql += "('large_airport')) AND airport.type IN ('large_airport', 'medium_airport') order by type, rand() limit 1"
+            for row in result:
+                rand_airport = row[0]
+            return rand_airport
+        def airportdist1():
+            sql = "select airport.latitude_deg, airport.longitude_deg from airport " \
+                  "where airport.name = '"+new_location+"'"
             cursor = connection.cursor()
             cursor.execute(sql)
             result = cursor.fetchall()
-            if cursor.rowcount > 0:
-                for row in result:
-                    return int(((distance.distance(starting_point2(start), (row[1], row[2])).km) * 112)/1000)
-
+            for row in result:
+                y = (row[0],row[1])
+            return y
+        def airportdist2():
+            sql = "select airport.latitude_deg, airport.longitude_deg from airport " \
+                  "where airport.name = '"+random_airport+"'"
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            for row in result:
+                x = (row[0],row[1])
+            return x
         # RANDOM AIRPORT
-        random_airport = qwerty()
-        dist = qwe()
+
+
+
+
+        random_airport = airport()
+        dist = int(((int(distance.distance(airportdist2(), airportdist1()).km))*112)/1000)
         airport_pkg = [f"{pkgtype()}", f"{random_airport}", f"{dist}"]
         return airport_pkg
 
@@ -233,12 +232,12 @@ def new_turn(new_location, coleft, current_score):
           f"CO2 left: {co2_left}                 "
           f"Score: {score} "
           f"\nChoose next location: "
-          f"\n      Type        Airport                  Distance (CO2)"
-          f"\n{airport_pkg1[3]}.    {airport_pkg1[0]}      {airport_pkg1[1]}                      {airport_pkg1[2]}"
-          f"\n{airport_pkg2[3]}.    {airport_pkg2[0]}      {airport_pkg2[1]}                      {airport_pkg2[2]}"
-          f"\n{airport_pkg3[3]}.    {airport_pkg3[0]}      {airport_pkg3[1]}                      {airport_pkg3[2]}"
-          f"\n{airport_pkg4[3]}.    {airport_pkg4[0]}      {airport_pkg4[1]}                      {airport_pkg4[2]}"
-          f"\n{airport_pkg5[3]}.    {airport_pkg5[0]}      {airport_pkg5[1]}                      {airport_pkg5[2]}")
+          f"\n      Type        Airport                                                  Distance (CO2)"
+          f"\n{airport_pkg1[3]}.    {airport_pkg1[0]}      {airport_pkg1[1]:<35s}                      {airport_pkg1[2]}"
+          f"\n{airport_pkg2[3]}.    {airport_pkg2[0]}      {airport_pkg2[1]:<35s}                      {airport_pkg2[2]}"
+          f"\n{airport_pkg3[3]}.    {airport_pkg3[0]}      {airport_pkg3[1]:<35s}                      {airport_pkg3[2]}"
+          f"\n{airport_pkg4[3]}.    {airport_pkg4[0]}      {airport_pkg4[1]:<35s}                      {airport_pkg4[2]}"
+          f"\n{airport_pkg5[3]}.    {airport_pkg5[0]}      {airport_pkg5[1]:<35s}                      {airport_pkg5[2]}")
     Choice = int(input("Enter: "))
 
 
@@ -339,13 +338,15 @@ def new_turn(new_location, coleft, current_score):
 
     return returnlist
 starting_score = 0
-starting_location = "helsinki"
+starting_location = startlocation()
 starting_difficulty = difficulty
 
 returnls = new_turn(starting_location,starting_difficulty,starting_score)
-for x in range (10):
+for x in range (1000):
     os.system('cls')
     returnls = new_turn(returnls[1],returnls[4],returnls[5])
+    if returnls[4] <0:
+        break
 
 os.system('cls')
 print("\n\n\n\n\nGame Over\n\n")
