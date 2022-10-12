@@ -1,16 +1,19 @@
 import time, os, importlib, random
 import mysql.connector
 from geopy import distance
+import random_airports
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
     database='flight_game',
     user='root',
-    password='1234',
+    password='MariaDB123',
     autocommit=True
 )
 os.system('cls')
 version_of_the_game = "Airport Game v.0.4"
+global airport_selections
+airport_selections = []
 
 # Intro the the Game + Tutorial
 
@@ -65,22 +68,22 @@ os.system('cls')
 #Game - Main Function
 
 def startlocation():
-    sql = "select airport.name from airport inner join country on country.iso_country = airport.iso_country "
-    sql += "where country.name = 'Finland' and airport.name NOT IN (SELECT airport.NAME from airport "
-    sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = 'Finland' AND airport.type IN "
-    sql += "('large_airport')) AND rand() limit 1"
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    for row in result:
-        startlocation = row[0]
-    return startlocation
+    # sql = "select airport.name from airport inner join country on country.iso_country = airport.iso_country "
+    # sql += "where country.name = 'Finland' and airport.name NOT IN (SELECT airport.NAME from airport "
+    # sql += "inner join country ON country.iso_country = airport.iso_country WHERE country.name = 'Finland' AND airport.type IN "
+    # sql += "('large_airport')) AND rand() limit 1"
+    # cursor = connection.cursor()
+    # cursor.execute(sql)
+    # result = cursor.fetchall()
+    # for row in result:
+    #     startlocation = row[0]
+    return "Helsinki Vantaa Airport"
 
 
 def new_turn(new_location, coleft, current_score):
     #FUNCTIONS
     start = "Finland"
-    def function():
+    def function(airport_number):
         def pkgtype():
             type = random.randint(1, 3)
             if type == 1:
@@ -125,8 +128,8 @@ def new_turn(new_location, coleft, current_score):
 
 
 
-
-        random_airport = airport()
+        print(airport_selections)
+        random_airport =  airport_selections[airport_number] #airport()
         dist = int(((int(distance.distance(airportdist2(), airportdist1()).km))*112)/1000)
         airport_pkg = [f"{pkgtype()}", f"{random_airport}", f"{dist}"]
         return airport_pkg
@@ -210,21 +213,35 @@ def new_turn(new_location, coleft, current_score):
         return amount_left_points
 
     player_location = new_location
+    airport_pkg1 = ""
+    airport_pkg2 = ""
+    airport_pkg3 = ""
+    airport_pkg4 = ""
+    airport_pkg5 = ""
 
-    airport_pkg1 = function()
+#    airport_list = [airport_pkg1,airport_pkg2,airport_pkg3,airport_pkg4,airport_pkg5 ]
+##    airport_names = random_airports.index_selection(current_airport)
+
+#    for i in range(len(airport_list)):
+#        airport_list[i] = function(i)
+#        airport_list[i].append(i+1)
+
+
+    airport_pkg1 = function(0)
     airport_pkg1.append(1)
 
-    airport_pkg2 = function()
+    airport_pkg2 = function(1)
     airport_pkg2.append(2)
 
-    airport_pkg3 = function()
+    airport_pkg3 = function(2)
     airport_pkg3.append(3)
 
-    airport_pkg4 = function()
+    airport_pkg4 = function(3)
     airport_pkg4.append(4)
 
-    airport_pkg5 = function()
+    airport_pkg5 = function(4)
     airport_pkg5.append(5)
+
 
     co2_left = coleft
     score = current_score
@@ -341,9 +358,13 @@ starting_score = 0
 starting_location = startlocation()
 starting_difficulty = difficulty
 
+airport_selections = random_airports.index_selection("Helsinki Vantaa Airport")
 returnls = new_turn(starting_location,starting_difficulty,starting_score)
 for x in range (1000):
     os.system('cls')
+#    global airport_selections
+    airport_selections = random_airports.index_selection(returnls[1])
+    print(airport_selections)
     returnls = new_turn(returnls[1],returnls[4],returnls[5])
     if returnls[4] <0:
         break
