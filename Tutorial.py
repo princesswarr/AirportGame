@@ -1,5 +1,5 @@
 ##
-import random, os, time
+import random, os, time, _mysql_connector,geopy
 os.system('cls')
 print("\n\nLoading Tutorial! \n")
 time.sleep(0.5)
@@ -22,18 +22,19 @@ os.system('cls')
 
 print("\n\nTutorial\n")
 time.sleep(1)
-print("In this game you play as a postal pilot collecting packages from different airports.\n"
+print("In this game you play as a postal pilot collecting packages from different airports in Finland.\n"
       "You start from a random airport and get given a choice of five airports to travel to.\n"
       "\n")
 tutorialinput = input("Press enter to continue: ")
-if tutorialinput == "":
-    time.sleep(0.2)
-    os.system('cls')
+
+time.sleep(0.2)
+os.system('cls')
 
 print("\n\nTutorial\n")
 print("The objective of the game is to collect as many packages you can while consuming as "
       "little CO2 as possible.\n"
-      "The more packages you collect the higher your score will be.\n"
+      "Once you run out of CO2 budget you lose"
+      "\nThe more packages you collect the higher your score will be.\n"
       "Each choice of airport has a randomly chosen package you can collect.\n"
       "There are three different package types :\n"
       "Bronze = 100 points\n"
@@ -42,34 +43,33 @@ print("The objective of the game is to collect as many packages you can while co
       "\n"
       "")
 tutorialinput = input("Press enter to continue: ")
-if tutorialinput == "":
-    time.sleep(0.2)
-    os.system('cls')
+time.sleep(0.2)
+os.system('cls')
 print("\n\nTutorial\n")
 print("CO2 is the limited resource in the game.\n"
       "The further away an airport is from your current location the more CO2 your plane will consume.\n"
       "\n"
       "")
 tutorialinput = input("Press enter to continue: ")
-if tutorialinput == "":
-    time.sleep(0.2)
-    os.system('cls')
+
+time.sleep(0.2)
+os.system('cls')
 print("\n\nTutorial\n")
-print("To make the experience more varied you will encounter weather effects during your travels.\n"
+print("To make the experience more varied you will encounter weather events during your travels.\n"
       "The more valuable the package that you collect is the more likely you are to encounter a "
-      "negative weather effect.\n"
-      "The worse the weather effect is the less points you gain from the package.\n"
+      "negative weather event.\n"
+      "The worse the weather event is the less points you gain from the package.\n"
       "")
 tutorialinput = input("Press enter to continue: ")
-if tutorialinput == "":
-    time.sleep(0.2)
-    os.system('cls')
+
+time.sleep(0.2)
+os.system('cls')
 print("\n\nTutorial\n")
 print("Finally here is a quick look at how the UI (User Interface) looks !\n")
 tutorialinput = input("Press enter to continue: ")
-if tutorialinput == "":
-    time.sleep(0.2)
-    os.system('cls')
+
+time.sleep(0.2)
+os.system('cls')
 print("\n\nTutorial\n")
 print(f"You are in: Helsinki-Vantaa Airport                 "
               f"CO2 left: 7000                 "
@@ -82,7 +82,9 @@ print(f"You are in: Helsinki-Vantaa Airport                 "
               f"\n4.    Bronze      Maarianhamina Airport       500"
               f"\n5.    Bronze      Vaasa Airport               900\n\n"
       f"Enter: \n\n"
-      f"Here you input a number corresponding to the airport you wish to travel to.\n")
+      f"You input a number corresponding to the airport you wish to travel to.\n"
+      f"Then you may encounter a weather event potentially reducing your points\n"
+      f"After which your current location gets updated including your score and CO2 left\n")
 tutorialinput = input("Press enter to continue: ")
-if tutorialinput == "":
-    time.sleep(0.2)
+time.sleep(0.2)
+os.system('cls')
