@@ -3,8 +3,9 @@
 Flight Game 
  
 Software 1: Procedural Programming 
-Group TXL22S1 – B 
+Class TXL22S1 – B 
  
+Group 8
 Students: Brandon Bósquez Gonzal, Chad Clusker, Milan Thapa Magar, Mahinur 
 
 ## Introduction 
