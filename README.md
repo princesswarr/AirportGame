@@ -20,7 +20,9 @@ This is composed of 4 chapters:
 
 You are a postal worker collecting packages by plane. The setting is Finland, and the packages are collected at the different airports of the country. You have a limited resource called CO2; you will receive a budget that determines how much CO2 you can spend. The budget is generated depending on what difficulty level you choose. There are three package type, each having a different value. Your goal is to collect the highest added value of packages before you run out of CO2 to spend.  
 Strategy comes into place when you have to evaluate the highest return value option, taking into account the points you will receive against the amount of CO2 you will consume. An element of risk is also added, since the higher the value of the package is, the higher the possibility of bad weather at the airport that stores it. Bad weather causes the points of the package to be reduced. 
-Functional Requirements
+
+## Functional Requirements
+
 As a user the path to be followed is very linear and straightforward, where the variety of each new game is found in the randomness of the options to travel to and the package types that these contain, as well as in the weather conditions.
 
 A general path that could be followed would be:
@@ -36,16 +38,10 @@ A general path that could be followed would be:
        steps 4-6 are repeated
 
     b.	No: Game over
+    
+## Game Path Diagram
 
-
-
-
-
-
-
-
-
-
+![Proyecto_diagrama2](https://user-images.githubusercontent.com/111736314/195540758-d2629372-8e15-42e9-9bba-4d0df40aef62.png)
 
 ## Quality Requirements
 
