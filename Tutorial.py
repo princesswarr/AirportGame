@@ -71,7 +71,7 @@ tutorialinput = input("Press enter to continue: ")
 time.sleep(0.2)
 os.system('cls')
 print("\n\nTutorial\n")
-print(f"You are in: Helsinki-Vantaa Airport                 "
+print(f"\n\nYou are in: Helsinki-Vantaa Airport                 "
               f"CO2 left: 7000                 "
               f"Score: 550 \n"
               f"\nChoose next location: "
